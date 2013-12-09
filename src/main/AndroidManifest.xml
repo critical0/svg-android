@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.fueled.utils"
+    package="com.larvalabs.svgandroid"
     android:versionCode="1"
     android:versionName="3.0.0a">
 
