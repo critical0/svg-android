@@ -32,8 +32,8 @@ public class SVGBuilder {
 	private boolean closeInputStream = true;
 
     private float defaultStrokeWidth;
-    private int defaultStrokeColor = Color.TRANSPARENT;
-    private int fillColor = Color.BLACK;
+    private int defaultStrokeColor;
+    private int fillColor;
 
     /**
 	 * Parse SVG data from an input stream.
@@ -184,7 +184,8 @@ public class SVGBuilder {
 		}
 
 		try {
-			final SVGHandler handler = new SVGHandler();
+
+            final SVGHandler handler = new SVGHandler();
 			handler.setColorSwap(searchColor, replaceColor, overideOpacity);
 			handler.setWhiteMode(whiteMode);
 			if (strokeColorFilter != null) {
@@ -205,11 +206,9 @@ public class SVGBuilder {
             }
 
             //Set the default fill color
-            if (fillColor != Color.BLACK) {
-                handler.fillPaint.setColor(fillColor);
-            }
+            handler.fillPaint.setColor(fillColor);
 
-			// SVGZ support (based on https://github.com/josefpavlik/svg-android/commit/fc0522b2e1):
+            // SVGZ support (based on https://github.com/josefpavlik/svg-android/commit/fc0522b2e1):
 			if(!data.markSupported())
 				data = new BufferedInputStream(data); // decorate stream so we can use mark/reset
 			try {

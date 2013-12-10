@@ -950,11 +950,16 @@ public class SVGParser {
 			} else {
 				if (fillSet) {
 					// If fill is set, inherit from parent
-					return true;
+                    return fillPaint.getColor() != Color.TRANSPARENT; // optimization
 				} else {
-					fillPaint.setShader(null);
-					return true;
-				}
+
+                    if (fillPaint.getColor() == Color.TRANSPARENT) {
+                        return false;
+                    }
+
+                    fillPaint.setShader(null);
+                    return true;
+                }
 			}
 		}
 
@@ -1182,9 +1187,6 @@ public class SVGParser {
 		@Override
 		public void startElement(String namespaceURI, String localName, String qName, Attributes atts)
 				throws SAXException {
-			// Reset paint opacity
-			strokePaint.setAlpha(255);
-			fillPaint.setAlpha(255);
 			// Ignore everything but rectangles in bounds mode
 			if (boundsMode) {
 				if (localName.equals("rect")) {
