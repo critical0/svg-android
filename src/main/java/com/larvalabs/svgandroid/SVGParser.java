@@ -950,7 +950,7 @@ public class SVGParser {
 			} else {
 				if (fillSet) {
 					// If fill is set, inherit from parent
-					return fillPaint.getColor() != Color.TRANSPARENT; // optimization
+					return true;
 				} else {
 					fillPaint.setShader(null);
 					return true;
