@@ -1,35 +1,17 @@
-# Status: Unmaintained. Discontinued.
-This project is no longer being developed or maintained.
+[![Release](https://img.shields.io/github/tag/panzerfahrer/svg-android.svg?label=JitPack)](https://jitpack.io/#panzerfahrer/svg-android/svg-android-2.0.7)
 
-### _
 
-This is forked from the awesome but unmaintained:
-http://code.google.com/p/svg-android/
-
-Changes
-=======
-* Mavenised.
-* Added SVGBuilder to allow easy specification of SVG parsing & rendering options.
-* ColorFilters can now be applied.
-* Layer opacity and hiding is now supported.
-* This library now works with Robolectric.
-* SVG viewBox attribute is now handled.
-* Numbers with exponents are handled.
-* SVGZ (gzipped svg) auto-detected and supported. (Thank @josefpavlik & @mstevens83)
-* Performance enhancements.
-* Has most community patches applied. Great work to
-  [josefpavlik](https://github.com/josefpavlik/svg-android) and
-  [mrn](https://github.com/mrn/svg-android)
-
-Maven
+Gradle
 =====
-Add this to your Android project's pom.xml:
-```xml
-<dependency>
-  <groupId>com.github.japgolly.android</groupId>
-  <artifactId>svg-android</artifactId>
-	<version>2.0.6</version>
-</dependency>
+
+```groovy
+repositories {
+        maven { url "https://jitpack.io" }
+}
+ 
+dependencies {
+        compile 'com.github.panzerfahrer:svg-android:svg-android-2.0.7'
+}
 ```
 
 Usage
