@@ -2,10 +2,9 @@ src/main/gen
 target
 ~*.sw[p-z]
 *.iml
-
+.idea
 .gradle
 /local.properties
-/.idea/workspace.xml
 .DS_Store
 build/
 .settings
