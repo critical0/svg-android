@@ -12,8 +12,14 @@ import android.graphics.RadialGradient;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.Shader.TileMode;
-import android.util.FloatMath;
 import android.util.Log;
+
+import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXNotRecognizedException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.DefaultHandler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,13 +29,6 @@ import java.util.regex.Pattern;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-
-import org.xml.sax.Attributes;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXNotRecognizedException;
-import org.xml.sax.XMLReader;
-import org.xml.sax.helpers.DefaultHandler;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements. See the NOTICE
@@ -518,8 +517,8 @@ public class SVGParser {
 		ry = Math.abs(ry);
 
 		final float thrad = theta * (float) Math.PI / 180;
-		final float st = FloatMath.sin(thrad);
-		final float ct = FloatMath.cos(thrad);
+		final float st = (float) Math.sin(thrad);
+		final float ct = (float) Math.cos(thrad);
 
 		final float xc = (lastX - x) / 2;
 		final float yc = (lastY - y) / 2;
@@ -534,7 +533,7 @@ public class SVGParser {
 		float lambda = (x1ts / rxs + y1ts / rys) * 1.001f; // add 0.1% to be sure that no out of range occurs due to
 															// limited precision
 		if (lambda > 1) {
-			float lambdasr = FloatMath.sqrt(lambda);
+			float lambdasr = (float) Math.sqrt(lambda);
 			rx *= lambdasr;
 			ry *= lambdasr;
 			rxs = rx * rx;
@@ -542,7 +541,7 @@ public class SVGParser {
 		}
 
 		final float R =
-				FloatMath.sqrt((rxs * rys - rxs * y1ts - rys * x1ts) / (rxs * y1ts + rys * x1ts))
+				(float) Math.sqrt((rxs * rys - rxs * y1ts - rys * x1ts) / (rxs * y1ts + rys * x1ts))
 						* ((largeArc == sweepArc) ? -1 : 1);
 		final float cxt = R * rx * y1t / ry;
 		final float cyt = -R * ry * x1t / rx;
@@ -1281,8 +1280,8 @@ public class SVGParser {
 							x2 += x1;
 							y2 += y1;
 
-							float width = FloatMath.ceil(x2 - x1);
-							float height = FloatMath.ceil(y2 - y1);
+							float width = (float) Math.ceil(x2 - x1);
+							float height = (float) Math.ceil(y2 - y1);
 							canvas = picture.beginRecording((int) width, (int) height);
 							canvasRestoreCount = canvas.save();
 							canvas.clipRect(0f, 0f, width, height);
@@ -1294,8 +1293,8 @@ public class SVGParser {
 				}
 				// No viewbox
 				if (canvas == null) {
-					int width = (int) FloatMath.ceil(getFloatAttr("width", atts));
-					int height = (int) FloatMath.ceil(getFloatAttr("height", atts));
+					int width = (int) (float) Math.ceil(getFloatAttr("width", atts));
+					int height = (int) (float) Math.ceil(getFloatAttr("height", atts));
 					canvas = picture.beginRecording(width, height);
 					canvasRestoreCount = null;
 				}
