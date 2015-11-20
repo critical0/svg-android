@@ -979,13 +979,16 @@ public class SVGParser {
 			} else {
 				if (fillSet) {
 					// If fill is set, inherit from parent
-					return fillPaint.getColor() != Color.TRANSPARENT; // optimization
+                    return fillPaint.getColor() != Color.TRANSPARENT; // optimization
 				} else {
-					// Default is black fill
-					fillPaint.setShader(null);
-					fillPaint.setColor(Color.BLACK);
-					return true;
-				}
+
+                    if (fillPaint.getColor() == Color.TRANSPARENT) {
+                        return false;
+                    }
+
+                    fillPaint.setShader(null);
+                    return true;
+                }
 			}
 		}
 
@@ -1026,31 +1029,21 @@ public class SVGParser {
 
 			String strokeString = atts.getAttr("stroke");
 			if (strokeString != null) {
-				if (strokeString.equalsIgnoreCase("none")) {
-					strokePaint.setColor(Color.TRANSPARENT);
-					return false;
-				} else {
+				if (!strokeString.equalsIgnoreCase("none")) {
                     Integer color = atts.getColor(strokeString);
 					if (color != null) {
 						doColor(atts, color, false, strokePaint);
 						return true;
 					} else {
 						Log.w(TAG, "Unrecognized stroke color, using none: " + strokeString);
-						strokePaint.setColor(Color.TRANSPARENT);
 						return false;
 					}
 				}
-			} else {
-				if (strokeSet) {
-					// Inherit from parent
-					return strokePaint.getColor() != Color.TRANSPARENT; // optimization
-				} else {
-					// Default is none
-					strokePaint.setColor(Color.TRANSPARENT);
-					return false;
-				}
 			}
-		}
+
+            return strokePaint.getColor() != Color.TRANSPARENT;
+
+        }
 
 		private Gradient doGradient(boolean isLinear, Attributes atts) {
 			Gradient gradient = new Gradient();
@@ -1252,9 +1245,6 @@ public class SVGParser {
 		@Override
 		public void startElement(String namespaceURI, String localName, String qName, Attributes atts)
 				throws SAXException {
-			// Reset paint opacity
-			strokePaint.setAlpha(255);
-			fillPaint.setAlpha(255);
 			textPaint.setAlpha(255);
 
 			this.drawCharacters = false;

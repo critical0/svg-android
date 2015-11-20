@@ -2,6 +2,7 @@ package com.larvalabs.svgandroid;
 
 import android.content.res.AssetManager;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.util.Log;
 
@@ -26,11 +27,15 @@ public class SVGBuilder {
 	private Integer searchColor = null;
 	private Integer replaceColor = null;
 	private ColorFilter strokeColorFilter = null, fillColorFilter = null;
-	private boolean whiteMode = false;
+    private boolean whiteMode = false;
 	private boolean overideOpacity = false;
 	private boolean closeInputStream = true;
 
-	/**
+    private float defaultStrokeWidth;
+    private int defaultStrokeColor;
+    private int fillColor;
+
+    /**
 	 * Parse SVG data from an input stream.
 	 * 
 	 * @param svgData the input stream, with SVG XML data in UTF-8 character encoding.
@@ -127,7 +132,7 @@ public class SVGBuilder {
 		return this;
 	}
 
-	/**
+    /**
 	 * Applies a {@link ColorFilter} to fills in the SVG.
 	 */
 	public SVGBuilder setFillColorFilter(ColorFilter colorFilter) {
@@ -144,7 +149,30 @@ public class SVGBuilder {
 		return this;
 	}
 
-	/**
+    /**
+     * Sets a default stroke width
+     * @param defaultStrokeWidth
+     */
+    public SVGBuilder setDefaultStrokeWidth(float defaultStrokeWidth) {
+        this.defaultStrokeWidth = defaultStrokeWidth;
+        return this;
+    }
+
+    /**
+     * Sets a default fill color
+     * @param fillColor
+     */
+    public SVGBuilder setFillColor(int fillColor) {
+        this.fillColor = fillColor;
+        return this;
+    }
+
+    public SVGBuilder setDefaultStrokeColor(int defaultStrokeColor) {
+        this.defaultStrokeColor = defaultStrokeColor;
+        return this;
+    }
+
+    /**
 	 * Loads, reads, parses the SVG (or SVGZ).
 	 * 
 	 * @return the parsed SVG.
@@ -156,7 +184,8 @@ public class SVGBuilder {
 		}
 
 		try {
-			final SVGHandler handler = new SVGHandler();
+
+            final SVGHandler handler = new SVGHandler();
 			handler.setColorSwap(searchColor, replaceColor, overideOpacity);
 			handler.setWhiteMode(whiteMode);
 			if (strokeColorFilter != null) {
@@ -166,7 +195,20 @@ public class SVGBuilder {
 				handler.fillPaint.setColorFilter(fillColorFilter);
 			}
 
-			// SVGZ support (based on https://github.com/josefpavlik/svg-android/commit/fc0522b2e1):
+            //Set the default stroke width
+            if (defaultStrokeWidth > 0) {
+                handler.strokePaint.setStrokeWidth(defaultStrokeWidth);
+            }
+
+            //Set the default stroke color
+            if (defaultStrokeColor != Color.TRANSPARENT) {
+                handler.strokePaint.setColor(defaultStrokeColor);
+            }
+
+            //Set the default fill color
+            handler.fillPaint.setColor(fillColor);
+
+            // SVGZ support (based on https://github.com/josefpavlik/svg-android/commit/fc0522b2e1):
 			if(!data.markSupported())
 				data = new BufferedInputStream(data); // decorate stream so we can use mark/reset
 			try {
