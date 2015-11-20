@@ -4,13 +4,18 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:1.5.0'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.3'
     }
 }
 apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
 
 repositories {
     mavenCentral()
 }
+
+group = "com.github.panzerfahrer"
+version = "2.0.7"
 
 android {
     compileSdkVersion ANDROID_BUILD_SDK_VERSION as int
@@ -30,4 +35,27 @@ android {
 }
 
 dependencies {
+}
+
+// build a jar with source files
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+task javadoc(type: Javadoc) {
+    failOnError false
+    source = android.sourceSets.main.java.sourceFiles
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+// build a jar with javadoc
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
 }
