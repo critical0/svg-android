@@ -20,7 +20,7 @@ public class SVGDrawable extends PictureDrawable {
 	private SVGState mSvgState;
 
 	/**
-	 * @param picture
+	 * @param svg
 	 */
 	public SVGDrawable(SVG svg) {
 		super(svg.getPicture());
