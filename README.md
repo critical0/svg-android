@@ -1,4 +1,4 @@
-[![Release](https://img.shields.io/github/tag/panzerfahrer/svg-android.svg?label=JitPack)](https://jitpack.io/#panzerfahrer/svg-android/svg-android-2.0.7)
+[![Release](https://img.shields.io/github/tag/panzerfahrer/svg-android.svg?label=JitPack)](https://jitpack.io/#panzerfahrer/svg-android/2.0.7)
 
 
 Gradle
@@ -10,7 +10,7 @@ repositories {
 }
  
 dependencies {
-        compile 'com.github.panzerfahrer:svg-android:svg-android-2.0.7'
+        compile 'com.github.panzerfahrer:svg-android:2.0.7'
 }
 ```
 
